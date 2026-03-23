@@ -1,2 +1,2 @@
 User-Agent: *Disallow:
-Sitemap: https://astakosolives.com/sitemap.xml 
+Sitemap: https://kalantzisfoods.com/sitemap.xml 
