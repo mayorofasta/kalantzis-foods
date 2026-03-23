@@ -1,0 +1,55 @@
+@charset "UTF-8";
+
+.text-div {
+  font-family: "Roboto", serif;
+  font-size: 1em;
+  padding-bottom: 4rem;
+}
+
+.center_div {
+  margin: 0 auto;
+  width: 50%;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 900 !important;
+  padding-top: 3vmin;
+  padding-bottom: 1.5vmin;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 1500 !important;
+  padding-top: 2vmin;
+  padding-bottom: 2vmin;
+  text-align: left;
+}
+
+h3 {
+  font-size: 1.5rem;
+  padding-top: 1vmin;
+  padding-bottom: 1vmin;
+  text-align: left;
+}
+
+.img-div {
+  padding-left: 20vmin;
+  padding-right: 20vmin;
+}
+
+.my-3 p {
+  text-align: left;
+}
+
+li {
+  text-align: left;
+}
+
+button {
+  color: rgb(5, 65, 5);
+}
+
+label {
+  display: inline-block;
+}
