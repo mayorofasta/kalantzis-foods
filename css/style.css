@@ -135,6 +135,10 @@ header .container-fluid .col-md-7 p {
   border-radius: 30px;
   font-weight: 700;
 }
+h2 {
+  font-size: 42px;
+  padding: 1.5vmin 0 1vmin 0;
+}
 .section-2 h2 {
   font-size: 42px;
   padding: 6vmin 0 1vmin 0;
@@ -325,7 +329,6 @@ span.underline {
 }
 
 .footer-logo {
-  filter: invert(85%);
   max-width: 100px;
 }
 
