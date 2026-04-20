@@ -83,7 +83,6 @@ header .navbar-brand {
 
 header .navbar-brand img {
   padding-right: 15px;
-  filter: invert(100%);
   max-width: 100px;
 }
 
