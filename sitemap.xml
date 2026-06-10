@@ -1,137 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Core Website Pages -->
+  <url>
+    <loc>https://kalantzisfoods.com/index.html</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://kalantzisfoods.com/about-us.html</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kalantzisfoods.com/product-list.html</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kalantzisfoods.com/blog.html</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
+  <!-- Newly Restructured SEO/GEO Blog Posts -->
+  <url>
+    <loc>https://kalantzisfoods.com/high-phenolic-olives.html</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://kalantzisfoods.com/history-of-greek-olives.html</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://kalantzisfoods.com/what-is-olea-europaea.html</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://kalantzisfoods.com/how-to-store-olives.html</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
-<url>
-  <loc>https://kalantzisfoods.com/</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>1.00</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/product-list.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/timokatalogos-gr.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/about-us.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/blog.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/contact.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/privacy-policy.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/index.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/index-gr.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/product-list-gr.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/blog-gr.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/posts/01-chemical-composition-of-olives.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/posts/02-historical-review.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/posts/03-olea-europaea.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/posts/04-nutrition-and-health-benefits-of-olives.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/posts/05-nutrition-and-health-benefits-of-olives.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/posts/06-nutrition-and-health-benefits-of-olives.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/about-us-gr.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.51</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/contact-gr.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.51</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/privacy-policy-gr.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.51</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/posts/01-chemical-composition-of-olives-gr.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.51</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/posts/02-historical-review-gr.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.51</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/posts/04-nutrition-and-health-benefits-of-olives-gr.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.51</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/posts/05-nutrition-and-health-benefits-of-olives-gr.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.51</priority>
-</url>
-<url>
-  <loc>https://kalantzisfoods.com/posts/06-nutrition-and-health-benefits-of-olives-gr.html</loc>
-  <lastmod>2026-04-09T13:43:56+00:00</lastmod>
-  <priority>0.51</priority>
-</url>
-
-
+  <!-- Additional Standard Pages -->
+  <url>
+    <loc>https://kalantzisfoods.com/timokatalogos.html</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://kalantzisfoods.com/contact.html</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
 </urlset>
