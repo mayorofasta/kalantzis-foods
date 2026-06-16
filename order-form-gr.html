@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="el">
+
+<head>
+	<title>Φόρμα Παραγγελίας | Lazaros Kalantzis Foods</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="Στοιχεία επικοινωνίας" />
+
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<link rel="stylesheet" href="./css/header.css">
+	<link rel="stylesheet" href="./css/contact_style.css">
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css">
+	<script src="https://kit.fontawesome.com/dc6deb9381.js" crossorigin="anonymous"></script>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+	<link rel="manifest" href="site.webmanifest">
+	<link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css">
+
+
+
+</head>
+
+<body class="bg-light py-5">
+
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-8 col-lg-6">
+
+				<div class="card shadow">
+					<div class="card-body p-4">
+						<h2 class="card-title h4 mb-3">Φόρμα Παραγγελίας Χονδρικής</h2>
+						<p class="text-muted small mb-4">Επιλέξτε προϊόντα και ποσότητες. Δεν απαιτείται πληρωμή.</p>
+
+						<form action="https://web3forms.com" method="POST">
+							<!-- 1. ΡΥΘΜΙΣΗ: Βάλτε το Access Key από το Web3Forms εδώ -->
+							<input type="hidden" name="access_key" value="544cca67-88e9-4dc7-8edf-b2a8d86c46b7">
+
+							<!-- Στοιχεία Πελάτη -->
+							<div class="mb-3">
+								<label for="name" class="form-label fw-bold">Όνομα / Εταιρεία</label>
+								<input type="text" id="name" name="Όνομα_Πελάτη" class="form-control"
+									placeholder="π.χ. Κατάστημα Α" required>
+							</div>
+
+							<div class="mb-3">
+								<label for="email" class="form-label fw-bold">Email Επικοινωνίας</label>
+								<input type="email" id="email" name="Email_Πελάτη" class="form-control"
+									placeholder="name@example.com" required>
+							</div>
+
+							<!-- Μηχανή Αναζήτησης -->
+							<div class="p-3 bg-secondary bg-opacity-10 rounded mb-4">
+								<label for="search" class="form-label fw-bold">🔍 Αναζήτηση Προϊόντος</label>
+								<input type="search" id="search" class="form-control"
+									placeholder="Πληκτρολογήστε για φιλτράρισμα...">
+							</div>
+
+							<!-- Λίστα Προϊόντων -->
+							<div class="mb-3">
+								<label class="form-label fw-bold">Διαθέσιμα Προϊόντα</label>
+								<!-- Το div αυτό έχει σταθερό ύψος και scrollbar χάρη στο Bootstrap στυλ -->
+								<div id="productsList" class="list-group overflow-auto border rounded"
+									style="max-height: 350px;">
+									<div class="text-center text-muted p-4">Φόρτωση προϊόντων από το Google Sheets...
+									</div>
+								</div>
+							</div>
+
+							<!-- Κουμπί Υποβολής -->
+							<button type="submit" class="btn btn-success w-100 py-2 fs-5 mt-3">Υποβολή
+								Παραγγελίας</button>
+						</form>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// ⚠️ ΡΥΘΜΙΣΗ: Βάλτε εδώ το ID του ΝΕΟΥ σας Google Sheet
+		//const SHEET_ID = 'ΒΑΛΤΕ_ΤΟ_ΝΕΟ_GOOGLE_SHEET_ID_ΕΔΩ'; 
+
+		// Το επίσημο URL Δημοσίευσης που επιστρέφει ΚΑΘΑΡΟ CSV χωρίς κώδικα Google
+		const url = `https://docs.google.com/spreadsheets/d/e/2PACX-1vTItrc4PJqFxrgnI4sQrh_8IN9ZgS9X80VT1XTYWN2CgdA87hmaaez3wDv8w7tJTBat8BAPdXOkX9Jo/pub?output=csv`;
+
+		let myProductsList = [];
+		const container = document.getElementById('productsList');
+		const searchInput = document.getElementById('search');
+
+		// Λήψη δεδομένων
+		fetch(url)
+			.then(res => {
+				if (!res.ok) throw new Error("Αδυναμία σύνδεσης με το Google Sheet.");
+				return res.text();
+			})
+			.then(csvText => {
+				// Έλεγχος ασφαλείας αν η Google στέλνει ακόμα κώδικα JavaScript αντί για προϊόντα
+				if (csvText.includes("<!doctype html>") || csvText.includes("globalThis") || csvText.includes("function")) {
+					throw new Error("Το Google Sheet επιστρέφει κώδικα! Βεβαιωθείτε ότι κάνατε: Αρχείο -> Κοινοποίηση -> Δημοσίευση στον ιστό -> Δημοσίευση.");
+				}
+
+				// Διαχωρισμός ανά γραμμή
+				const lines = csvText.split(/\r?\n/);
+
+				// Αφαίρεση της 1ης γραμμής αν περιέχει τίτλους (π.χ. "Προϊόν", "Τιμή")
+				if (lines.length > 0) lines.shift();
+
+				myProductsList = lines.map(line => {
+					// Διαχωρισμός στηλών με βάση το κόμμα (αγνοώντας κόμματα μέσα σε εισαγωγικά)
+					const columns = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+
+					if (columns && columns.length > 0) {
+						// 1η Στήλη (Column A -> index 0) = Όνομα Προϊόντος
+						const name = columns[0] ? columns[0].replace(/^"|"$/g, '').trim() : '';
+						// 2η Στήλη (Column B -> index 1) = Τιμή
+						const price = columns[1] ? columns[1].replace(/^"|"$/g, '').trim() : '';
+
+						return { name, price };
+					}
+					return null;
+				}).filter(item => item !== null && item.name !== ''); // Αφαίρεση κενών γραμμών
+
+				displayProducts();
+			})
+			.catch(err => {
+				container.innerHTML = `
+                <div class='text-danger text-center p-4 small'>
+                    <h5 class='h6 fw-bold text-danger mb-2'>⚠️ Πρόβλημα Σύνδεσης</h5>
+                    <p class='mb-3'>${err.message}</p>
+                    <div class='text-start bg-white p-3 border rounded text-muted' style='font-size:12px;'>
+                        <strong>Οδηγίες Ενεργοποίησης:</strong><br>
+                        1. Μπείτε στο Google Sheet.<br>
+                        2. Πατήστε <strong>Αρχείο</strong> -> <strong>Κοινοποίηση</strong> -> <strong>Δημοσίευση στον ιστό</strong>.<br>
+                        3. Επιλέξτε μορφή <strong>.csv</strong> και πατήστε το μπλε κουμπί <strong>Δημοσίευση</strong>.<br>
+                        4. Ελέγξτε αν το SHEET_ID στον κώδικα είναι σωστό.
+                    </div>
+                </div>`;
+				console.error(err);
+			});
+
+		// Εμφάνιση προϊόντων και τιμών στην οθόνη με Bootstrap 5
+		function displayProducts(filterText = "") {
+			container.innerHTML = "";
+
+			const filtered = myProductsList.filter(item =>
+				item.name.toLowerCase().includes(filterText.toLowerCase())
+			);
+
+			if (filtered.length === 0) {
+				container.innerHTML = "<div class='text-center text-muted p-4'>Δεν βρέθηκαν προϊόντα.</div>";
+				return;
+			}
+
+			filtered.forEach(item => {
+				const safeName = item.name.replace(/[^a-zA-Z0-9α-ωΑ-Ω]/g, '_');
+				const priceDisplay = item.price ? `<span class="badge bg-primary rounded-pill me-2">€${item.price}</span>` : '';
+
+				const div = document.createElement('div');
+				div.className = 'list-group-item d-flex justify-content-between align-items-center py-2';
+
+				div.innerHTML = `
+                <div class="d-flex align-items-center flex-grow-1 pe-2">
+                    ${priceDisplay}
+                    <span class="small text-wrap fw-semibold text-dark">${item.name}</span>
+                </div>
+                <input type="number" 
+                       name="Ποσότητα_-_${safeName}" 
+                       class="form-control form-control-sm text-center" 
+                       min="0" 
+                       value="0" 
+                       style="width: 75px;">
+            `;
+				container.appendChild(div);
+			});
+		}
+
+		searchInput.addEventListener('input', (e) => {
+			displayProducts(e.target.value);
+		});
+	</script>
+
+</body>
+
+</html>
