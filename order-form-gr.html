@@ -38,18 +38,17 @@
 
 	<div class="container">
 		<div class="row justify-content-center">
-			<div class="col-md-8 col-lg-6">
+			<div class="col-md-8 col-lg-7">
 
 				<div class="card shadow">
 					<div class="card-body p-4">
 						<h2 class="card-title h4 mb-3">Φόρμα Παραγγελίας Χονδρικής</h2>
-						<p class="text-muted small mb-4">Επιλέξτε προϊόντα και ποσότητες. Δεν απαιτείται πληρωμή.</p>
+						<p class="text-muted small mb-4">Επιλέξτε προϊόντα και ποσότητες. Δεν απαιτείται πληρωμή τώρα.
+						</p>
 
-						<form action="https://web3forms.com" method="POST">
-							<!-- 1. ΡΥΘΜΙΣΗ: Βάλτε το Access Key από το Web3Forms εδώ -->
+						<form id="orderForm">
 							<input type="hidden" name="access_key" value="544cca67-88e9-4dc7-8edf-b2a8d86c46b7">
 
-							<!-- Στοιχεία Πελάτη -->
 							<div class="mb-3">
 								<label for="name" class="form-label fw-bold">Όνομα / Εταιρεία</label>
 								<input type="text" id="name" name="Όνομα_Πελάτη" class="form-control"
@@ -62,26 +61,45 @@
 									placeholder="name@example.com" required>
 							</div>
 
-							<!-- Μηχανή Αναζήτησης -->
 							<div class="p-3 bg-secondary bg-opacity-10 rounded mb-4">
 								<label for="search" class="form-label fw-bold">🔍 Αναζήτηση Προϊόντος</label>
 								<input type="search" id="search" class="form-control"
 									placeholder="Πληκτρολογήστε για φιλτράρισμα...">
 							</div>
 
-							<!-- Λίστα Προϊόντων -->
 							<div class="mb-3">
-								<label class="form-label fw-bold">Διαθέσιμα Προϊόντα</label>
-								<!-- Το div αυτό έχει σταθερό ύψος και scrollbar χάρη στο Bootstrap στυλ -->
+								<div class="d-flex justify-content-between align-items-center mb-2">
+									<label class="form-label fw-bold mb-0">Διαθέσιμα Προϊόντα</label>
+									<button type="button" id="resetQuantitiesBtn"
+										class="btn btn-outline-danger btn-sm fw-semibold" style="font-size: 0.8rem;">🗑️
+										Μηδενισμός</button>
+								</div>
 								<div id="productsList" class="list-group overflow-auto border rounded"
-									style="max-height: 350px;">
-									<div class="text-center text-muted p-4">Φόρτωση προϊόντων από το Google Sheets...
-									</div>
+									style="max-height: 52vh;">
+									<div class="text-center text-muted p-4">Φόρτωση προϊόντων και τιμών από το Google
+										Sheets...</div>
 								</div>
 							</div>
 
-							<!-- Κουμπί Υποβολής -->
-							<button type="submit" class="btn btn-success w-100 py-2 fs-5 mt-3">Υποβολή
+							<div class="p-3 bg-secondary bg-opacity-10 rounded mb-3 border">
+								<div class="d-flex justify-content-between mb-2">
+									<span class="fw-semibold text-dark">Συνολικά Κιβώτια:</span>
+									<span id="totalBoxes" class="fw-bold text-success">0</span>
+								</div>
+								<hr class="my-2 text-muted">
+								<div class="d-flex justify-content-between mb-2">
+									<span class="fw-semibold text-muted">Καθαρή Αξία:</span>
+									<span id="totalNet" class="fw-bold">€0.00</span>
+								</div>
+								<div class="d-flex justify-content-between">
+									<span class="fw-semibold text-muted">Σύνολο με ΦΠΑ (13%):</span>
+									<span id="totalVat" class="fw-bold text-primary">€0.00</span>
+								</div>
+							</div>
+
+							<div id="formResponse" class="mt-3"></div>
+
+							<button type="submit" id="submitBtn" class="btn btn-success w-100 py-2 fs-5 mt-2">Υποβολή
 								Παραγγελίας</button>
 						</form>
 					</div>
@@ -92,74 +110,53 @@
 	</div>
 
 	<script>
-		// ⚠️ ΡΥΘΜΙΣΗ: Βάλτε εδώ το ID του ΝΕΟΥ σας Google Sheet
-		//const SHEET_ID = 'ΒΑΛΤΕ_ΤΟ_ΝΕΟ_GOOGLE_SHEET_ID_ΕΔΩ'; 
-
-		// Το επίσημο URL Δημοσίευσης που επιστρέφει ΚΑΘΑΡΟ CSV χωρίς κώδικα Google
 		const url = `https://docs.google.com/spreadsheets/d/e/2PACX-1vTItrc4PJqFxrgnI4sQrh_8IN9ZgS9X80VT1XTYWN2CgdA87hmaaez3wDv8w7tJTBat8BAPdXOkX9Jo/pub?output=csv`;
 
 		let myProductsList = [];
 		const container = document.getElementById('productsList');
 		const searchInput = document.getElementById('search');
+		const orderForm = document.getElementById('orderForm');
+		const formResponse = document.getElementById('formResponse');
+		const submitBtn = document.getElementById('submitBtn');
+		const resetQuantitiesBtn = document.getElementById('resetQuantitiesBtn');
 
-		// Λήψη δεδομένων
+		// Λήψη δεδομένων από το Google Sheet
 		fetch(url)
 			.then(res => {
 				if (!res.ok) throw new Error("Αδυναμία σύνδεσης με το Google Sheet.");
 				return res.text();
 			})
 			.then(csvText => {
-				// Έλεγχος ασφαλείας αν η Google στέλνει ακόμα κώδικα JavaScript αντί για προϊόντα
-				if (csvText.includes("<!doctype html>") || csvText.includes("globalThis") || csvText.includes("function")) {
-					throw new Error("Το Google Sheet επιστρέφει κώδικα! Βεβαιωθείτε ότι κάνατε: Αρχείο -> Κοινοποίηση -> Δημοσίευση στον ιστό -> Δημοσίευση.");
-				}
-
-				// Διαχωρισμός ανά γραμμή
 				const lines = csvText.split(/\r?\n/);
-
-				// Αφαίρεση της 1ης γραμμής αν περιέχει τίτλους (π.χ. "Προϊόν", "Τιμή")
 				if (lines.length > 0) lines.shift();
 
-				myProductsList = lines.map(line => {
-					// Διαχωρισμός στηλών με βάση το κόμμα (αγνοώντας κόμματα μέσα σε εισαγωγικά)
+				myProductsList = lines.map((line, index) => {
 					const columns = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-
 					if (columns && columns.length > 0) {
-						// 1η Στήλη (Column A -> index 0) = Όνομα Προϊόντος
-						const name = columns[0] ? columns[0].replace(/^"|"$/g, '').trim() : '';
-						// 2η Στήλη (Column B -> index 1) = Τιμή
-						const price = columns[1] ? columns[1].replace(/^"|"$/g, '').trim() : '';
+						const name = columns[2] ? columns[2].replace(/^"|"$/g, '').trim() : '';
+						const priceRaw = columns[1] ? columns[1].replace(/^"|"$/g, '').trim() : '';
 
-						return { name, price };
+						const cleanPrice = parseFloat(priceRaw.replace(/[^0-9,.]/g, '').replace(',', '.')) || 0;
+
+						const rawStep = columns[3] ? columns[3].replace(/^"|"$/g, '').trim() : '';
+						const step = parseInt(rawStep, 10) || 10;
+
+						return { id: index, name, price: cleanPrice, priceRaw, quantity: 0, step: step };
 					}
 					return null;
-				}).filter(item => item !== null && item.name !== ''); // Αφαίρεση κενών γραμμών
+				}).filter(item => item !== null && item.name !== '');
 
 				displayProducts();
+				updateOrderSummary();
 			})
 			.catch(err => {
-				container.innerHTML = `
-                <div class='text-danger text-center p-4 small'>
-                    <h5 class='h6 fw-bold text-danger mb-2'>⚠️ Πρόβλημα Σύνδεσης</h5>
-                    <p class='mb-3'>${err.message}</p>
-                    <div class='text-start bg-white p-3 border rounded text-muted' style='font-size:12px;'>
-                        <strong>Οδηγίες Ενεργοποίησης:</strong><br>
-                        1. Μπείτε στο Google Sheet.<br>
-                        2. Πατήστε <strong>Αρχείο</strong> -> <strong>Κοινοποίηση</strong> -> <strong>Δημοσίευση στον ιστό</strong>.<br>
-                        3. Επιλέξτε μορφή <strong>.csv</strong> και πατήστε το μπλε κουμπί <strong>Δημοσίευση</strong>.<br>
-                        4. Ελέγξτε αν το SHEET_ID στον κώδικα είναι σωστό.
-                    </div>
-                </div>`;
-				console.error(err);
+				container.innerHTML = `<div class='text-danger text-center p-4 small'><strong>Σφάλμα!</strong><br>${err.message}</div>`;
 			});
 
-		// Εμφάνιση προϊόντων και τιμών στην οθόνη με Bootstrap 5
+		// Εμφάνιση προϊόντων στην οθόνη
 		function displayProducts(filterText = "") {
 			container.innerHTML = "";
-
-			const filtered = myProductsList.filter(item =>
-				item.name.toLowerCase().includes(filterText.toLowerCase())
-			);
+			const filtered = myProductsList.filter(item => item.name.toLowerCase().includes(filterText.toLowerCase()));
 
 			if (filtered.length === 0) {
 				container.innerHTML = "<div class='text-center text-muted p-4'>Δεν βρέθηκαν προϊόντα.</div>";
@@ -167,8 +164,8 @@
 			}
 
 			filtered.forEach(item => {
-				const safeName = item.name.replace(/[^a-zA-Z0-9α-ωΑ-Ω]/g, '_');
-				const priceDisplay = item.price ? `<span class="badge bg-primary rounded-pill me-2">€${item.price}</span>` : '';
+				const safeProduct_Name = item.name.replace(/[^a-zA-Z0-9α-ωΑ-Ω]/g, '_');
+				const priceDisplay = item.priceRaw ? `<span class="badge bg-primary rounded-pill me-2" style="font-size: 0.75rem; padding: 0.3em 0.6em;">€${item.priceRaw}</span>` : '';
 
 				const div = document.createElement('div');
 				div.className = 'list-group-item d-flex justify-content-between align-items-center py-2';
@@ -176,24 +173,183 @@
 				div.innerHTML = `
                 <div class="d-flex align-items-center flex-grow-1 pe-2">
                     ${priceDisplay}
-                    <span class="small text-wrap fw-semibold text-dark">${item.name}</span>
+                    <span class="text-wrap fw-semibold text-dark" style="font-size: 0.85rem; line-height: 1.2;">${item.name}</span>
                 </div>
-                <input type="number" 
-                       name="Ποσότητα_-_${safeName}" 
-                       class="form-control form-control-sm text-center" 
-                       min="0" 
-                       value="0" 
-                       style="width: 75px;">
+                
+                <div class="input-group input-group-sm qty-container" data-product-id="${item.id}" style="width: auto; flex-wrap: nowrap;">
+                    <button class="btn btn-outline-danger btn-qty px-2" type="button" data-change="-${item.step}">-${item.step}</button>
+                    <button class="btn btn-outline-secondary btn-qty px-2" type="button" data-change="-1">-</button>
+                    
+                    <input type="text" 
+                           inputmode="numeric"
+                           pattern="[0-9]*"
+                           name="${safeProduct_Name}" 
+                           class="form-control text-center qty-input" 
+                           value="${item.quantity}" 
+                           style="width: 45px; flex: none; font-size: 0.9rem;">
+                    
+                    <button class="btn btn-outline-secondary btn-qty px-2" type="button" data-change="1">+</button>
+                    <button class="btn btn-outline-success btn-qty px-2" type="button" data-change="${item.step}">+${item.step}</button>
+                </div>
             `;
 				container.appendChild(div);
 			});
 		}
 
-		searchInput.addEventListener('input', (e) => {
-			displayProducts(e.target.value);
+		// Υπολογισμός και ενημέρωση των συνόλων στην οθόνη
+		function updateOrderSummary() {
+			let totalNet = 0;
+			let totalBoxes = 0;
+
+			myProductsList.forEach(item => {
+				if (item.quantity > 0) {
+					totalNet += item.quantity * item.price;
+					if (item.step > 0) {
+						totalBoxes += item.quantity / item.step;
+					}
+				}
+			});
+
+			const totalVat = totalNet * 1.13;
+
+			document.getElementById('totalNet').innerText = `€${totalNet.toFixed(2)}`;
+			document.getElementById('totalVat').innerText = `€${totalVat.toFixed(2)}`;
+			document.getElementById('totalBoxes').innerText = Number(totalBoxes.toFixed(2)).toString();
+		}
+
+		searchInput.addEventListener('input', (e) => displayProducts(e.target.value));
+
+		resetQuantitiesBtn.addEventListener('click', function () {
+			myProductsList.forEach(product => product.quantity = 0);
+			displayProducts(searchInput.value);
+			updateOrderSummary();
+		});
+
+		container.addEventListener('click', function (event) {
+			const button = event.target.closest('.btn-qty');
+			if (!button) return;
+
+			const qtyContainer = button.closest('.qty-container');
+			const input = qtyContainer.querySelector('.qty-input');
+			const productId = parseInt(qtyContainer.getAttribute('data-product-id'), 10);
+
+			const changeAmount = parseInt(button.getAttribute('data-change'), 10);
+			let currentValue = parseInt(input.value, 10) || 0;
+			let newValue = currentValue + changeAmount;
+
+			if (newValue < 0) newValue = 0;
+
+			input.value = newValue;
+
+			const product = myProductsList.find(p => p.id === productId);
+			if (product) {
+				product.quantity = newValue;
+				updateOrderSummary();
+			}
+		});
+
+		container.addEventListener('input', function (event) {
+			const input = event.target.closest('.qty-input');
+			if (!input) return;
+
+			const qtyContainer = input.closest('.qty-container');
+			const productId = parseInt(qtyContainer.getAttribute('data-product-id'), 10);
+
+			let newValue = parseInt(input.value, 10) || 0;
+			if (newValue < 0) newValue = 0;
+
+			const product = myProductsList.find(p => p.id === productId);
+			if (product) {
+				product.quantity = newValue;
+				updateOrderSummary();
+			}
+		});
+
+		// Διαχείριση υποβολής παραγγελίας
+		orderForm.addEventListener('submit', function (e) {
+			e.preventDefault();
+			formResponse.innerHTML = "";
+
+			const selectedProducts = myProductsList.filter(p => p.quantity > 0);
+
+			if (selectedProducts.length === 0) {
+				formResponse.innerHTML = `<div class="alert alert-warning text-center small py-2">⚠️ Παρακαλώ επιλέξτε ποσότητα σε τουλάχιστον ένα προϊόν πριν την υποβολή.</div>`;
+				return;
+			}
+
+			const customerName = document.getElementById('name').value;
+			const customerEmail = document.getElementById('email').value;
+
+			let currentTotalNet = 0;
+			let currentTotalBoxes = 0;
+			let productsLinesArray = [];
+
+			selectedProducts.forEach((product, index) => {
+				const itemNumber = index + 1;
+				const boxes = product.step > 0 ? (product.quantity / product.step) : 0;
+				const boxesText = `${Number(boxes.toFixed(2))}K/${product.quantity}τ`;
+				const itemTotalCost = (product.quantity * product.price).toFixed(2);
+
+				productsLinesArray.push(`[${boxesText}] #${itemNumber} ${product.name}: €${itemTotalCost}`);
+
+				currentTotalNet += product.quantity * product.price;
+				if (product.step > 0) {
+					currentTotalBoxes += product.quantity / product.step;
+				}
+			});
+
+			const currentTotalVat = currentTotalNet * 1.13;
+
+			// ΑΛΛΑΓΗ: Το Email μπήκε σε νέα αυτόνομη γραμμή ακριβώς κάτω από το Όνομα Πελάτη
+			const finalReceiptPayload = [
+				`ΠΕΛΑΤΗΣ: ${customerName}`,
+				`EMAIL: ${customerEmail}`,
+				`----------------------------------------------------------------------`,
+				productsLinesArray.join("\n"),
+				`----------------------------------------------------------------------`,
+				`ΣΥΝΟΛΑ -> Κιβώτια: ${Number(currentTotalBoxes.toFixed(2))} | Καθαρή: €${currentTotalNet.toFixed(2)} | Με ΦΠΑ: €${currentTotalVat.toFixed(2)}`
+			].join("\n");
+
+			const object = {};
+			object["access_key"] = orderForm.access_key.value;
+			object["ΠΑΡΑΓΓΕΛΙΑ ΧΟΝΔΡΙΚΗΣ"] = finalReceiptPayload;
+
+			const json = JSON.stringify(object);
+
+			submitBtn.disabled = true;
+			submitBtn.innerText = "Αποστολή Παραγγελίας...";
+
+			fetch('https://api.web3forms.com/submit', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				},
+				body: json
+			})
+				.then(async response => {
+					const data = await response.json();
+					if (response.ok && data.success) {
+						formResponse.innerHTML = `<div class="alert alert-success text-center small py-2">✅ Η παραγγελία σας στάλθηκε επιτυχώς! Ευχαριστούμε.</div>`;
+
+						myProductsList.forEach(p => p.quantity = 0);
+						orderForm.reset();
+						displayProducts(searchInput.value);
+						updateOrderSummary();
+					} else {
+						formResponse.innerHTML = `<div class="alert alert-danger text-center small py-2">❌ Σφάλμα Διακομιστή: ${data.message || 'Μη έγκυρο Access Key'}</div>`;
+					}
+				})
+				.catch(error => {
+					formResponse.innerHTML = `<div class="alert alert-danger text-center small py-2">❌ Αδυναμία σύνδεσης. Βεβαιωθείτε ότι έχετε ίντερνετ και δοκιμάστε ξανά.</div>`;
+					console.error(error);
+				})
+				.finally(() => {
+					submitBtn.disabled = false;
+					submitBtn.innerText = "Υποβολή Παραγγελίας";
+				});
 		});
 	</script>
-
 </body>
 
 </html>
