@@ -32,197 +32,329 @@
 
 </head>
 
-<body>
-	<header>
-		<div class="container-fluid p-0">
-			<nav style="background-color: rgb(0, 56, 0);" class="navbar navbar-expand-lg">
-				<a class="navbar-brand" href="#">
-					<img src="../assets/menu_logo.png" title="Kalantzis Foods Logo"
-						alt="Lazaros Kalantzis Foods official logo - Premium Greek Olives from Astakos" />
-					<span>Lazaros Kalantzis Foods</span>
-				</a>
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-					aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-					<i class="fas fa-align-right text-light"></i>
-				</button>
-				<div class="collapse navbar-collapse" id="navbarNav">
-					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-						<li class="nav-item active">
-							<a class="nav-link" href="index-gr.html">ΑΡΧΙΚΗ
-								<span class="sr-only">(current)</span>
-							</a>
-						</li>
-						<li class="nav-item dropdown">
-							<div class="dropdown">
-								<a href="#products" class="nav-link">ΤΑ ΠΡΟΙΟΝΤΑ ΜΑΣ</a>
-								<div class="dropdown-content">
-									<div class="dropdown-content">
-										<a href="product-list.html" onclick="catredir('.vacuum');">Olives in vacuum
-											bags</a>
-										<a href="product-list.html" onclick="catredir('.pet');">Olives in plastic
-											containers</a>
-										<a href="product-list.html" onclick="catredir('.jar');">Olives in glass
-											jars</a>
-										<a href="product-list.html" onclick="catredir('.paste');">Olive paste</a>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="order-form-gr.html">ΠΑΡΑΓΓΕΛΙΑ</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="about-us-gr.html">Η ΦΙΛΟΣΟΦΙΑ ΜΑΣ</a>
-						</li>
-					</ul>
-					<ul class="navbar-nav">
-						<div class="nav-item"><select class="selectpicker" data-width="fit"
-								onchange="location = this.value;">
-								<option value="contact-gr.html"
-									data-content='<span class="flag-icon flag-icon-gr"></span> Greek'>
-									Greek</option>
-								<option value="contact.html"
-									data-content='<span class="flag-icon flag-icon-us"></span> English'>English
-								</option>
-							</select></div>
-						<li style="padding-right: 20vmin;" class="nav-item">
-							<a class="nav-link" href="contact.html">ΕΠΙΚΟΙΝΩΝΙΑ</a>
-						</li>
-					</ul>
-				</div>
-			</nav>
-		</div>
-	</header>
+<body class="bg-light py-5">
 
-	<section style="background-color: rgb(134, 165, 134);" class="ftco-section">
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-md-6 text-center mb-5">
-					<h1 class="heading-section">Στοιχεία επικοινωνίας</h1>
-				</div>
-			</div>
-			<div class="row justify-content-center">
-				<div class="col-md-12">
-					<div class="wrapper">
-						<div class="row no-gutters mb-5">
-							<div class="col-md-5 align-items-stretch">
-								<div id="map"><img class="img-fluid" src="../assets/mapimage.png"
-										alt="Kalantzis Foods Location">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-8 col-lg-7">
+
+				<div class="card shadow">
+					<div class="card-body p-4">
+						<h2 class="card-title h4 mb-3">Φόρμα Παραγγελίας Χονδρικής</h2>
+						<p class="text-muted small mb-4">Επιλέξτε προϊόντα και ποσότητες. Δεν απαιτείται πληρωμή τώρα.
+						</p>
+
+						<form id="orderForm">
+							<input type="hidden" name="access_key" value="544cca67-88e9-4dc7-8edf-b2a8d86c46b7">
+
+							<div class="mb-3">
+								<label for="name" class="form-label fw-bold">Όνομα / Εταιρεία</label>
+								<input type="text" id="name" name="Όνομα_Πελάτη" class="form-control"
+									placeholder="π.χ. Κατάστημα Α" required>
+							</div>
+
+							<div class="mb-3">
+								<label for="email" class="form-label fw-bold">Email Επικοινωνίας</label>
+								<input type="email" id="email" name="Email_Πελάτη" class="form-control"
+									placeholder="name@example.com" required>
+							</div>
+
+							<div class="p-3 bg-secondary bg-opacity-10 rounded mb-4">
+								<label for="search" class="form-label fw-bold">🔍 Αναζήτηση Προϊόντος</label>
+								<input type="search" id="search" class="form-control"
+									placeholder="Πληκτρολογήστε για φιλτράρισμα...">
+							</div>
+
+							<div class="mb-3">
+								<div class="d-flex justify-content-between align-items-center mb-2">
+									<label class="form-label fw-bold mb-0">Διαθέσιμα Προϊόντα</label>
+									<button type="button" id="resetQuantitiesBtn"
+										class="btn btn-outline-danger btn-sm fw-semibold" style="font-size: 0.8rem;">🗑️
+										Μηδενισμός</button>
+								</div>
+								<div id="productsList" class="list-group overflow-auto border rounded"
+									style="max-height: 52vh;">
+									<div class="text-center text-muted p-4">Φόρτωση προϊόντων και τιμών από το Google
+										Sheets...</div>
 								</div>
 							</div>
-							<div class="col-md-7 d-flex">
-								<div class="contact-wrap w-100 p-md-5 p-4">
-									<h3 class="mb-4">Επικοινωνία</h3>
-									<div id="form-message-warning" class="mb-4"></div>
-									<div id="form-message-success" class="mb-4">
-										Το μήνυμα εστάλη, ευχαριστούμε!
-									</div>
-									<form action="https://formspree.io/f/mvolqqpd" method="POST" id="contactForm"
-										name="contactForm" class="contactForm">
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group">
-													<label class="label" for="name">ΟΝΟΜΑ</label>
-													<input type="text" class="form-control" name="name" id="name"
-														placeholder="Όνομα">
-												</div>
-											</div>
-											<div class="col-md-6">
-												<div class="form-group">
-													<label class="label" for="email">ΔΙΕΥΘΥΝΣΗ Email</label>
-													<input type="email" class="form-control" name="_replyto" id="email"
-														placeholder="Email">
-												</div>
-											</div>
-											<div class="col-md-12">
-												<div class="form-group">
-													<label class="label" for="subject">ΤΙΤΛΟΣ</label>
-													<input type="text" class="form-control" name="subject" id="subject"
-														placeholder="Τίτλος">
-												</div>
-											</div>
-											<div class="col-md-12">
-												<div class="form-group">
-													<label class="label" for="#">ΜΗΝΥΜΑ</label>
-													<textarea name="body" class="form-control" id="message" cols="30"
-														rows="4" placeholder="Μήνυμα"></textarea>
-												</div>
-											</div>
-											<div class="col-md-12">
-												<div class="form-group">
-													<input id="submitButton" type="submit" value="Αποστολή μηνύματος"
-														class="btn btn-primary">
-													<div class="submitting"></div>
-												</div>
-											</div>
-										</div>
-									</form>
+
+							<div class="p-3 bg-secondary bg-opacity-10 rounded mb-3 border">
+								<div class="d-flex justify-content-between mb-2">
+									<span class="fw-semibold text-dark">Συνολικά Κιβώτια:</span>
+									<span id="totalBoxes" class="fw-bold text-success">0</span>
+								</div>
+								<hr class="my-2 text-muted">
+								<div class="d-flex justify-content-between mb-2">
+									<span class="fw-semibold text-muted">Καθαρή Αξία:</span>
+									<span id="totalNet" class="fw-bold">€0.00</span>
+								</div>
+								<div class="d-flex justify-content-between">
+									<span class="fw-semibold text-muted">Σύνολο με ΦΠΑ (13%):</span>
+									<span id="totalVat" class="fw-bold text-primary">€0.00</span>
 								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-3">
-								<div class="dbox w-100 text-center">
-									<div class="icon d-flex align-items-center justify-content-center">
-										<span class="fa fa-map-marker"></span>
-									</div>
-									<div class="text">
-										<p><span>Διεύθυνση:</span> Δημοτική Οδός 0, Αστακός GR, 30006</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="dbox w-100 text-center">
-									<div class="icon d-flex align-items-center justify-content-center">
-										<span class="fa fa-phone"></span>
-									</div>
-									<div class="text">
-										<p><span>Τηλέφωνο:</span> <a href="#">+30 2646041500</a><br><a href="#">+30
-												697 520 5000</a></span></p>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="dbox w-100 text-center">
-									<div class="icon d-flex align-items-center justify-content-center">
-										<span class="fa fa-paper-plane"></span>
-									</div>
-									<div class="text">
-										<p><span>Email: </span><span id="text-conversion">zixnfvo example com</span></p>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="dbox w-100 text-center">
-									<div class="icon d-flex align-items-center justify-content-center">
-										<span class="fa fa-globe"></span>
-									</div>
-									<div class="text">
-										<p><span>Website:</span> <a href="#">kalantzisfoods.com</a></p>
-									</div>
-								</div>
-							</div>
-						</div>
+
+							<div id="formResponse" class="mt-3"></div>
+
+							<button type="submit" id="submitBtn" class="btn btn-success w-100 py-2 fs-5 mt-2">Υποβολή
+								Παραγγελίας</button>
+						</form>
 					</div>
 				</div>
+
 			</div>
 		</div>
-	</section>
+	</div>
 
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-	<!-- JavaScript Bundle with Popper -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
-		</script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
-		integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
-		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script type="text/javascript" src="./js/main.js"></script>
-	<script type="text/javascript" src="./js/obform.js"></script>
-	<script type="text/javascript" src="./js/text-conversion.js"></script>
+	<script>
+		const url = `https://docs.google.com/spreadsheets/d/e/2PACX-1vTItrc4PJqFxrgnI4sQrh_8IN9ZgS9X80VT1XTYWN2CgdA87hmaaez3wDv8w7tJTBat8BAPdXOkX9Jo/pub?output=csv`;
 
+		let myProductsList = [];
+		const container = document.getElementById('productsList');
+		const searchInput = document.getElementById('search');
+		const orderForm = document.getElementById('orderForm');
+		const formResponse = document.getElementById('formResponse');
+		const submitBtn = document.getElementById('submitBtn');
+		const resetQuantitiesBtn = document.getElementById('resetQuantitiesBtn');
+
+		// Λήψη δεδομένων από το Google Sheet
+		fetch(url)
+			.then(res => {
+				if (!res.ok) throw new Error("Αδυναμία σύνδεσης με το Google Sheet.");
+				return res.text();
+			})
+			.then(csvText => {
+				const lines = csvText.split(/\r?\n/);
+				if (lines.length > 0) lines.shift();
+
+				myProductsList = lines.map((line, index) => {
+					const columns = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+					if (columns && columns.length > 0) {
+						const name = columns[2] ? columns[2].replace(/^"|"$/g, '').trim() : '';
+						const priceRaw = columns[1] ? columns[1].replace(/^"|"$/g, '').trim() : '';
+
+						const cleanPrice = parseFloat(priceRaw.replace(/[^0-9,.]/g, '').replace(',', '.')) || 0;
+
+						const rawStep = columns[3] ? columns[3].replace(/^"|"$/g, '').trim() : '';
+						const step = parseInt(rawStep, 10) || 10;
+
+						return { id: index, name, price: cleanPrice, priceRaw, quantity: 0, step: step };
+					}
+					return null;
+				}).filter(item => item !== null && item.name !== '');
+
+				displayProducts();
+				updateOrderSummary();
+			})
+			.catch(err => {
+				container.innerHTML = `<div class='text-danger text-center p-4 small'><strong>Σφάλμα!</strong><br>${err.message}</div>`;
+			});
+
+		// Εμφάνιση προϊόντων στην οθόνη (ΜΕResponsive Mobile Δομή)
+		function displayProducts(filterText = "") {
+			container.innerHTML = "";
+			const filtered = myProductsList.filter(item => item.name.toLowerCase().includes(filterText.toLowerCase()));
+
+			if (filtered.length === 0) {
+				container.innerHTML = "<div class='text-center text-muted p-4'>Δεν βρέθηκαν προϊόντα.</div>";
+				return;
+			}
+
+			filtered.forEach(item => {
+				const safeProduct_Name = item.name.replace(/[^a-zA-Z0-9α-ωΑ-Ω]/g, '_');
+				const priceDisplay = item.priceRaw ? `<span class="badge bg-primary rounded-pill me-2" style="font-size: 0.75rem; padding: 0.3em 0.6em; flex-shrink: 0;">€${item.priceRaw}</span>` : '';
+
+				const div = document.createElement('div');
+				// ΑΛΛΑΓΗ: flex-column σε κινητά, flex-sm-row σε desktop για τέλειο mobile layout
+				div.className = 'list-group-item d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center py-2.5';
+
+				div.innerHTML = `
+                <div class="d-flex align-items-center w-100 mb-2 mb-sm-0 pe-sm-2">
+                    ${priceDisplay}
+                    <span class="text-wrap fw-semibold text-dark" style="font-size: 0.88rem; line-height: 1.3;">${item.name}</span>
+                </div>
+                
+                <div class="input-group input-group-sm qty-container ms-auto" data-product-id="${item.id}" style="width: auto; flex-wrap: nowrap;">
+                    <button class="btn btn-outline-danger btn-qty px-2.5 fw-semibold" type="button" data-change="-${item.step}">-${item.step}</button>
+                    <button class="btn btn-outline-secondary btn-qty px-2.5" type="button" data-change="-1">-</button>
+                    
+                    <input type="text" 
+                           inputmode="numeric"
+                           pattern="[0-9]*"
+                           name="${safeProduct_Name}" 
+                           class="form-control text-center qty-input" 
+                           value="${item.quantity}" 
+                           style="width: 46px; flex: none; font-size: 0.95rem; font-weight: 600;">
+                    
+                    <button class="btn btn-outline-secondary btn-qty px-2.5" type="button" data-change="1">+</button>
+                    <button class="btn btn-outline-success btn-qty px-2.5 fw-semibold" type="button" data-change="${item.step}">+${item.step}</button>
+                </div>
+            `;
+				container.appendChild(div);
+			});
+		}
+
+		// Υπολογισμός και ενημέρωση των συνόλων στην οθόνη
+		function updateOrderSummary() {
+			let totalNet = 0;
+			let totalBoxes = 0;
+
+			myProductsList.forEach(item => {
+				if (item.quantity > 0) {
+					totalNet += item.quantity * item.price;
+					if (item.step > 0) {
+						totalBoxes += item.quantity / item.step;
+					}
+				}
+			});
+
+			const totalVat = totalNet * 1.13;
+
+			document.getElementById('totalNet').innerText = `€${totalNet.toFixed(2)}`;
+			document.getElementById('totalVat').innerText = `€${totalVat.toFixed(2)}`;
+			document.getElementById('totalBoxes').innerText = Number(totalBoxes.toFixed(2)).toString();
+		}
+
+		searchInput.addEventListener('input', (e) => displayProducts(e.target.value));
+
+		resetQuantitiesBtn.addEventListener('click', function () {
+			myProductsList.forEach(product => product.quantity = 0);
+			displayProducts(searchInput.value);
+			updateOrderSummary();
+		});
+
+		container.addEventListener('click', function (event) {
+			const button = event.target.closest('.btn-qty');
+			if (!button) return;
+
+			const qtyContainer = button.closest('.qty-container');
+			const input = qtyContainer.querySelector('.qty-input');
+			const productId = parseInt(qtyContainer.getAttribute('data-product-id'), 10);
+
+			const changeAmount = parseInt(button.getAttribute('data-change'), 10);
+			let currentValue = parseInt(input.value, 10) || 0;
+			let newValue = currentValue + changeAmount;
+
+			if (newValue < 0) newValue = 0;
+
+			input.value = newValue;
+
+			const product = myProductsList.find(p => p.id === productId);
+			if (product) {
+				product.quantity = newValue;
+				updateOrderSummary();
+			}
+		});
+
+		container.addEventListener('input', function (event) {
+			const input = event.target.closest('.qty-input');
+			if (!input) return;
+
+			const qtyContainer = input.closest('.qty-container');
+			const productId = parseInt(qtyContainer.getAttribute('data-product-id'), 10);
+
+			let newValue = parseInt(input.value, 10) || 0;
+			if (newValue < 0) newValue = 0;
+
+			const product = myProductsList.find(p => p.id === productId);
+			if (product) {
+				product.quantity = newValue;
+				updateOrderSummary();
+			}
+		});
+
+		// Διαχείριση υποβολής παραγγελίας
+		orderForm.addEventListener('submit', function (e) {
+			e.preventDefault();
+			formResponse.innerHTML = "";
+
+			const selectedProducts = myProductsList.filter(p => p.quantity > 0);
+
+			if (selectedProducts.length === 0) {
+				formResponse.innerHTML = `<div class="alert alert-warning text-center small py-2">⚠️ Παρακαλώ επιλέξτε ποσότητα σε τουλάχιστον ένα προϊόν πριν την υποβολή.</div>`;
+				return;
+			}
+
+			const customerName = document.getElementById('name').value;
+			const customerEmail = document.getElementById('email').value;
+
+			let currentTotalNet = 0;
+			let currentTotalBoxes = 0;
+			let productsLinesArray = [];
+
+			selectedProducts.forEach((product, index) => {
+				const itemNumber = index + 1;
+				const boxes = product.step > 0 ? (product.quantity / product.step) : 0;
+				const boxesText = `${Number(boxes.toFixed(2))}K/${product.quantity}τ`;
+				const itemTotalCost = (product.quantity * product.price).toFixed(2);
+
+				productsLinesArray.push(`[${boxesText}] #${itemNumber} ${product.name}: €${itemTotalCost}`);
+
+				currentTotalNet += product.quantity * product.price;
+				if (product.step > 0) {
+					currentTotalBoxes += product.quantity / product.step;
+				}
+			});
+
+			const currentTotalVat = currentTotalNet * 1.13;
+
+			const finalReceiptPayload = [
+				`ΠΕΛΑΤΗΣ: ${customerName}`,
+				`EMAIL: ${customerEmail}`,
+				`----------------------------------------------------------------------`,
+				productsLinesArray.join("\n"),
+				`----------------------------------------------------------------------`,
+				`ΣΥΝΟΛΑ -> Κιβώτια: ${Number(currentTotalBoxes.toFixed(2))} | Καθαρή: €${currentTotalNet.toFixed(2)} | Με ΦΠΑ: €${currentTotalVat.toFixed(2)}`
+			].join("\n");
+
+			const object = {};
+			object["access_key"] = orderForm.access_key.value;
+			object["ΠΑΡΑΓΓΕΛΙΑ ΧΟΝΔΡΙΚΗΣ"] = finalReceiptPayload;
+
+			const json = JSON.stringify(object);
+
+			submitBtn.disabled = true;
+			submitBtn.innerText = "Αποστολή Παραγγελίας...";
+
+			fetch('https://api.web3forms.com/submit', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				},
+				body: json
+			})
+				.then(async response => {
+					const data = await response.json();
+					if (response.ok && data.success) {
+						// Αποθήκευση στοιχείων για τη σελίδα Thank You
+						const thankYouData = {
+							name: customerName,
+							email: customerEmail,
+							products: productsLinesArray,
+							boxes: Number(currentTotalBoxes.toFixed(2)),
+							net: currentTotalNet.toFixed(2),
+							vat: currentTotalVat.toFixed(2)
+						};
+						localStorage.setItem('latestOrder', JSON.stringify(thankYouData));
+
+						// Ανακατεύθυνση στη σελίδα ευχαριστιών
+						window.location.href = 'thank-you.html';
+					} else {
+						formResponse.innerHTML = `<div class="alert alert-danger text-center small py-2">❌ Σφάλμα Διακομιστή: ${data.message || 'Μη έγκυρο Access Key'}</div>`;
+					}
+				})
+				.catch(error => {
+					formResponse.innerHTML = `<div class="alert alert-danger text-center small py-2">❌ Αδυναμία σύνδεσης. Βεβαιωθείτε ότι έχετε ίντερνετ και δοκιμάστε ξανά.</div>`;
+					console.error(error);
+				})
+				.finally(() => {
+					submitBtn.disabled = false;
+					submitBtn.innerText = "Υποβολή Παραγγελίας";
+				});
+		});
+	</script>
 </body>
 
 </html>

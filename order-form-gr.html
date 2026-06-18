@@ -330,12 +330,18 @@
 				.then(async response => {
 					const data = await response.json();
 					if (response.ok && data.success) {
-						formResponse.innerHTML = `<div class="alert alert-success text-center small py-2">✅ Η παραγγελία σας στάλθηκε επιτυχώς! Ευχαριστούμε.</div>`;
+						const thankYouData = {
+							name: customerName,
+							email: customerEmail,
+							products: productsLinesArray,
+							boxes: Number(currentTotalBoxes.toFixed(2)),
+							net: currentTotalNet.toFixed(2),
+							vat: currentTotalVat.toFixed(2)
+						};
+						localStorage.setItem('latestOrder', JSON.stringify(thankYouData));
 
-						myProductsList.forEach(p => p.quantity = 0);
-						orderForm.reset();
-						displayProducts(searchInput.value);
-						updateOrderSummary();
+						// ΑΛΛΑΓΗ: Στόχευση στο νέο ελληνικό αρχείο
+						window.location.href = 'thank-you-gr.html';
 					} else {
 						formResponse.innerHTML = `<div class="alert alert-danger text-center small py-2">❌ Σφάλμα Διακομιστή: ${data.message || 'Μη έγκυρο Access Key'}</div>`;
 					}
