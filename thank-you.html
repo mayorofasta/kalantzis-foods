@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank you for your order!</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/dist/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Birthstone&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Κατακόρυφο και οριζόντιο κεντράρισμα σε όλη την οθόνη */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcfbfa;
+            color: #2d3748;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .company-name {
+            font-size: 1.15rem;
+            letter-spacing: 0.15em;
+            font-weight: 700;
+            color: #4a5568;
+            text-align: center;
+        }
+
+        /* Birthstone Font Style */
+        .birthstone-title {
+            font-family: 'Birthstone', cursive;
+            color: #1e4620;
+            font-size: 5.5rem;
+            line-height: 0.9;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        /* Κεντραρισμένο Κουτί Απόδειξης */
+        .premium-receipt-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            width: 100%;
+        }
+
+        /* Απόλυτο κεντράρισμα των δεδομένων της παραγγελίας */
+        .receipt-text-container {
+            font-family: monospace;
+            white-space: pre-wrap;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 20px;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: #1e293b;
+            text-align: center;
+            /* Κεντράρισμα κειμένου */
+        }
+
+        /* CSS Grid για Απόλυτα Ίσα και Justified Κουμπιά */
+        .buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            /* 3 στήλες ακριβώς ίδιου πλάτους */
+            gap: 12px;
+            /* Ίση απόσταση μεταξύ τους */
+            width: 100%;
+        }
+
+        .btn-distinct {
+            height: 52px;
+            font-weight: 700 !important;
+            letter-spacing: 0.02em;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border-radius: 8px !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            transition: all 0.2s ease;
+            text-decoration: none;
+            border: 1px solid transparent;
+            margin: 0;
+            width: 100%;
+            /* Γεμίζει τη στήλη του Grid */
+        }
+
+        .btn-distinct:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Χρώματα Υψηλής Αντίθεσης */
+        .btn-print-blue {
+            background-color: #0d6efd !important;
+            color: white !important;
+        }
+
+        .btn-print-blue:hover {
+            background-color: #0b5ed7 !important;
+        }
+
+        .btn-email-orange {
+            background-color: #ff9800 !important;
+            color: white !important;
+        }
+
+        .btn-email-orange:hover {
+            background-color: #e68900 !important;
+        }
+
+        .btn-return-green {
+            background-color: #10b981 !important;
+            color: white !important;
+        }
+
+        .btn-return-green:hover {
+            background-color: #0d9488 !important;
+        }
+
+        /* Responsive προσαρμογές για μικρές οθόνες κινητών */
+        @media (max-width: 576px) {
+            .btn-distinct {
+                font-size: 0.78rem !important;
+                gap: 3px;
+                height: 48px;
+            }
+
+            .buttons-grid {
+                gap: 8px;
+            }
+
+            .birthstone-title {
+                font-size: 4.2rem;
+            }
+        }
+
+        @media (min-width: 577px) {
+            .btn-distinct {
+                font-size: 0.95rem !important;
+            }
+        }
+
+        /* PRINT-FRIENDLY OVERRIDES */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                font-size: 11pt;
+                padding: 0 !important;
+                display: block !important;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            .premium-receipt-card {
+                border: none !important;
+                box-shadow: none !important;
+                background: transparent !important;
+            }
+
+            .receipt-text-container {
+                border: none !important;
+                padding: 0 !important;
+                background: transparent !important;
+            }
+
+            .container {
+                max-width: 100% !important;
+                width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="py-5">
+
+    <div class="container d-flex justify-content-center">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6 main-wrapper">
+
+            <div class="text-center mb-4">
+                <img src="assets/menu_logo.png" alt="LAZAROS KALANTZIS FOODS" class="img-fluid mb-2"
+                    style="max-height: 90px; object-fit: contain; display: block; margin: 0 auto;">
+                <div class="company-name text-uppercase">LAZAROS KALANTZIS FOODS</div>
+            </div>
+
+            <div class="mb-4 no-print text-center w-100">
+                <h1 class="birthstone-title">Thank You</h1>
+                <p class="text-muted small fw-medium">Your order has been submitted. You can get your copy below.</p>
+            </div>
+
+            <div class="premium-receipt-card mb-4">
+                <div class="p-3 p-sm-4">
+
+                    <div class="text-center mb-3 pb-2 border-bottom border-light">
+                        <span class="small fw-bold text-uppercase text-secondary tracking-wider d-block"
+                            style="font-size: 0.75rem;">Order copy</span>
+                        <span id="orderDate" class="small text-muted d-block mt-1" style="font-size: 0.8rem;"></span>
+                    </div>
+
+                    <div id="receiptContent" class="receipt-text-container">
+                        Loading order details...
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="no-print w-100">
+                <div class="buttons-grid">
+
+                    <button id="printBtn" class="btn btn-distinct btn-print-blue">
+                        <span>🖨️ Print</span>
+                    </button>
+
+                    <a id="emailBtn" href="#" class="btn btn-distinct btn-email-orange">
+                        <span>✉️ Email</span>
+                    </a>
+
+                    <a href="index.html" class="btn btn-distinct btn-return-green">
+                        <span>⬅️ Return</span>
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Ημερομηνία & Ώρα
+            const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            document.getElementById('orderDate').innerText = new Date().toLocaleDateString('el-GR', options);
+
+            // Ανάκτηση από το localStorage
+            const rawData = localStorage.getItem('latestOrder');
+
+            if (!rawData) {
+                document.getElementById('receiptContent').innerHTML = "⚠️ Δεν βρέθηκαν πρόσφατα στοιχεία παραγγελίας.";
+                document.getElementById('printBtn').disabled = true;
+                document.getElementById('emailBtn').classList.add('disabled');
+                return;
+            }
+
+            const order = JSON.parse(rawData);
+
+            // Δημιουργία δομής κειμένου
+            const receiptLines = [
+                `ΠΕΛΑΤΗΣ: ${order.name}`,
+                `EMAIL: ${order.email}`,
+                `----------------------------------------------------------------------`,
+                order.products.join("\n"),
+                `----------------------------------------------------------------------`,
+                `ΣΥΝΟΛΑ -> Κιβώτια: ${order.boxes} | Καθαρή: €${order.net} | Με ΦΠΑ: €${order.vat}`
+            ].join("\n");
+
+            document.getElementById('receiptContent').innerText = receiptLines;
+
+            // Λειτουργία Εκτύπωσης
+            document.getElementById('printBtn').addEventListener('click', function () {
+                window.print();
+            });
+
+            // Λειτουργία Email (mailto:)
+            const emailSubject = encodeURIComponent("Αντίγραφο Παραγγελίας - LAZAROS KALANTZIS FOODS");
+            const emailBody = encodeURIComponent(receiptLines);
+            document.getElementById('emailBtn').href = `mailto:${order.email}?subject=${emailSubject}&body=${emailBody}`;
+        });
+    </script>
+</body>
+
+</html>
