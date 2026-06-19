@@ -132,7 +132,7 @@
 				myProductsList = lines.map((line, index) => {
 					const columns = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
 					if (columns && columns.length > 0) {
-						const name = columns[2] ? columns[2].replace(/^"|"$/g, '').trim() : '';
+						const name = columns[4] ? columns[4].replace(/^"|"$/g, '').trim() : '';
 						const priceRaw = columns[1] ? columns[1].replace(/^"|"$/g, '').trim() : '';
 
 						const cleanPrice = parseFloat(priceRaw.replace(/[^0-9,.]/g, '').replace(',', '.')) || 0;
