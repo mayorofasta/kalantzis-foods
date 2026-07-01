@@ -50,9 +50,9 @@
 							</div>
 
 							<div class="mb-3">
-								<label_for="email" class="form-label fw-bold">Contact Email</label>
-									<input type="email" id="email" name="Customer Email" class="form-control"
-										placeholder="name@example.com" required>
+								<label for="email" class="form-label fw-bold">Contact Email</label>
+								<input type="email" id="email" name="Customer Email" class="form-control"
+									placeholder="name@example.com" required>
 							</div>
 
 							<div class="p-3 bg-secondary bg-opacity-10 rounded mb-4">
@@ -88,6 +88,13 @@
 									<span class="fw-semibold text-muted">Total with VAT (13%):</span>
 									<span id="totalVat" class="fw-bold text-primary">€0.00</span>
 								</div>
+							</div>
+
+							<div class="mb-3">
+								<label for="comments" class="form-label fw-bold">Order Comments / Special
+									Instructions</label>
+								<textarea id="comments" name="Customer Comments" class="form-control" rows="3"
+									placeholder="Type any delivery preferences, notes, or instructions here..."></textarea>
 							</div>
 
 							<div id="formResponse" class="mt-3"></div>
@@ -139,7 +146,7 @@
 					return null;
 				}).filter(item => item !== null && item.name !== '');
 
-				// 🔤 Alphabetical sorting execution
+				// Alphabetical sorting execution
 				myProductsList.sort((a, b) => a.name.localeCompare(b.name, 'el'));
 
 				displayProducts();
@@ -164,7 +171,6 @@
 				const priceDisplay = item.priceRaw ? `<span class="badge bg-primary rounded-pill me-2" style="font-size: 0.75rem; padding: 0.3em 0.6em; flex-shrink: 0;">${item.priceRaw}</span>` : '';
 
 				const div = document.createElement('div');
-				// Alternates row style behavior smoothly across breakpoints
 				div.className = 'list-group-item d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center py-2.5';
 
 				div.innerHTML = `
@@ -193,7 +199,6 @@
 			});
 		}
 
-		// Mathematical summation processor logic
 		function updateOrderSummary() {
 			let totalNet = 0;
 			let totalBoxes = 0;
@@ -276,6 +281,7 @@
 
 			const customerName = document.getElementById('name').value;
 			const customerEmail = document.getElementById('email').value;
+			const customerComments = document.getElementById('comments').value.trim(); // Capturing comments string
 
 			let currentTotalNet = 0;
 			let currentTotalBoxes = 0;
@@ -297,14 +303,24 @@
 
 			const currentTotalVat = currentTotalNet * 1.13;
 
-			const finalReceiptPayload = [
+			// Injects comment blocks directly into payload if they are written out
+			const finalReceiptPayloadArray = [
 				`CUSTOMER: ${customerName}`,
-				`EMAIL: ${customerEmail}`,
+				`EMAIL: ${customerEmail}`
+			];
+
+			if (customerComments) {
+				finalReceiptPayloadArray.push(`COMMENTS: ${customerComments}`);
+			}
+
+			finalReceiptPayloadArray.push(
 				`----------------------------------------------------------------------`,
 				productsLinesArray.join("\n"),
 				`----------------------------------------------------------------------`,
 				`TOTAL -> Boxes: ${Number(currentTotalBoxes.toFixed(2))} | Net: €${currentTotalNet.toFixed(2)} | with VAT: €${currentTotalVat.toFixed(2)}`
-			].join("\n");
+			);
+
+			const finalReceiptPayload = finalReceiptPayloadArray.join("\n");
 
 			const object = {};
 			object["access_key"] = orderForm.access_key.value;
@@ -329,6 +345,7 @@
 						const thankYouData = {
 							name: customerName,
 							email: customerEmail,
+							comments: customerComments,
 							products: productsLinesArray,
 							boxes: Number(currentTotalBoxes.toFixed(2)),
 							net: currentTotalNet.toFixed(2),
